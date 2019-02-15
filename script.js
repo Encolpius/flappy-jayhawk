@@ -1,42 +1,36 @@
 // JavaScript source code
+let pipesTop = [];
+let pipesBot = [];
 function setup() {
     createCanvas(600, 600);
-    stick = new Stick();
-    ground = new Ground();
+    pipe = new Pipe();
 }
 
-class Ground {
-    display() {
-        rect(0, 530, width, 70);
-    }
-}
-
-let sticks = [];
-class Stick {
-    constructor(x, y) {
+class Pipe {
+    constructor(x, y, height) {
         this.x = x;
         this.y = y;
+        this.height = height;
     }
 
     display() {
-        for (var i = 0; i < sticks.length; i++) {
-            rect(sticks[i].x, sticks[i].y, 15, 50);
-            sticks[i].x -= 1;
+        for (var i = 0; i < pipesTop.length; i++) {
+            rect(pipesTop[i].x, pipesTop[i].y, 80, pipesTop[i].height);
+            rect(pipesBot[i].x, pipesBot[i].y, 80, -pipesBot[i].height);
+            pipesTop[i].x -= 1;
+            pipesBot[i].x -= 1;
         }
     }
 };
-
-function createStick () {
-    for (var i = 0; i < 45; i++) {
-        sticks.push(new Stick(i * Math.floor(Math.random() + 40) + 610, Math.floor(Math.random() * 450)));
-    }
-};
-createStick();
-console.log(sticks);
+for (var i = 0; i < 25; i++) {
+    let height = Math.floor(Math.random() * 400),
+        newPipe = new Pipe(i * 200 + 560, -10, height);
+    pipesTop.push(newPipe);
+    pipesBot.push(new Pipe(i * 200 + 560, 600, 610 - (height + 100)));
+}
 
 function draw() {
     background(173, 216, 230);
-    fill(101, 67, 33)
-    ground.display();
-    stick.display();
-}
+    fill(152, 251, 152);
+    pipe.display();
+} 
