@@ -1,7 +1,6 @@
-// Global variables
+//// Global variables
 let pipes = [],
-    stars = [],
-    largeStars = [];
+    stars = [];
 // Setup - called once when the page is loaded
 function setup() {
     createCanvas(600, 600);
@@ -12,33 +11,23 @@ function setup() {
     }
     // Creates the stars
     for (var i = 0; i < 15; i++) {
-        let starX = (i * 40) + 40;
-        let starY = Math.floor(Math.random() * (250 - 30) + 30);
-        if (i % 4 == 0) {
-            largeStars.push(new star(starX, starY));
-        } else {
-            stars.push(new star(starX, starY));
-        }
+        let starX = (i * 35) + 35;
+        let starY = Math.floor(Math.random() * (270 - 40) + 40);
+        stars.push(new star(starX, starY));
     }
 }
 // Continually draws objects on screen
 function draw() {
     background(9, 135, 147);
     // Draws the stars
-    for (let star of stars) {
-        star.displaySmall();
-    }
-    for (let star of largeStars) {
-        star.displayLarge();
-    }
+    stars.forEach((x, i) => i % 4 == 0 ? x.displayLarge() : x.displaySmall());
     // Draws the pipes
-    for (let pipe of pipes) {
-        pipe.display();
-    }
+    pipes.forEach(x => x.display());
+    // Draws the ground
     fill(225, 218, 158);
     rect(-2, 540, width + 4, 62);
     noStroke();
-    // Draws the grass
+    // --grass
     for (var i = 0, l = groundXs.length; i < l; i++) {
         fill(156, 231, 90);
         rect(groundXs[i], 543, 50, 26);
@@ -51,6 +40,7 @@ function draw() {
         groundXs[i] <= -50 ? groundXs[i] = width : groundXs[i];
         noStroke();
     }
+    // Fills in the rest of the ground
     stroke(80, 127, 44);
     line(0, 570, width, 570);
     stroke(221, 169, 90);
@@ -98,6 +88,4 @@ function star(posX, posY) {
     }
 }
 //Calculates the height of the pipes
-function pipeHeight() {
-    return Math.floor(Math.random() * (380 - 20) + 20);
-}
+let pipeHeight = () => Math.floor(Math.random() * (380 - 20) + 20);
