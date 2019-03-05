@@ -1,6 +1,9 @@
 //// Global variables
+"use strict"
 let pipes = [],
-    stars = [];
+    stars = [],
+    grounds = [];
+const JAYHAWK = new Jayhawk(200, 200);
 // Setup - called once when the page is loaded
 function setup() {
     createCanvas(600, 600);
@@ -12,9 +15,11 @@ function setup() {
     // Creates the stars
     for (var i = 0; i < 15; i++) {
         let starX = (i * 35) + 35;
-        let starY = Math.floor(Math.random() * (270 - 40) + 40);
+        let starY = Math.floor(Math.random() * (350 - 40) + 40);
         stars.push(new star(starX, starY));
     }
+    // Creates the ground
+    Array.from(Array(16)).forEach((x, i) => grounds.push(new ground(i * 50, 543)));
 }
 // Continually draws objects on screen
 function draw() {
@@ -22,34 +27,40 @@ function draw() {
     // Draws the stars
     stars.forEach((x, i) => i % 4 == 0 ? x.displayLarge() : x.displaySmall());
     // Draws the pipes
-    pipes.forEach(x => x.display());
-    // Draws the ground
+    pipes.forEach(function (x) {
+        x.display();
+        JAYHAWK.checkIfTouchPipes(x);
+    });
+    // First ground layer
     fill(225, 218, 158);
     rect(-2, 540, width + 4, 62);
-    noStroke();
-    // --grass
-    for (var i = 0, l = groundXs.length; i < l; i++) {
-        fill(156, 231, 90);
-        rect(groundXs[i], 543, 50, 26);
-        for (let j = 0; j < 25; j += 2) {
-            stroke(119, 192, 51);
-            strokeWeight(2);
-            line((groundXs[i] - j) + 25, 544 + j, (groundXs[i] - j) + 45, 544 + j)
-        }
-        groundXs[i] -= 2;
-        groundXs[i] <= -50 ? groundXs[i] = width : groundXs[i];
-        noStroke();
-    }
-    // Fills in the rest of the ground
+    // Draws the grass blocks
+    grounds.forEach(x => x.display());
+    // Draws the Jayhawk
+    JAYHAWK.display();
+    keyIsDown(32) ? JAYHAWK.up(32) : JAYHAWK.down();
+    // Ground shading
     stroke(80, 127, 44);
     line(0, 570, width, 570);
     stroke(221, 169, 90);
     line(0, 572, width, 572);
 }
 // Creates the ground objects
-let groundXs = [];
-for (var i = 0; i < 16; i++) {
-    groundXs.push(i * 50);
+function ground(posX, posY) {
+    this.posX = posX;
+    this.posY = posY;
+    this.display = function () {
+        noStroke();
+        fill(156, 231, 90);
+        rect(this.posX, 543, 50, 26);
+        for (let j = 0; j < 25; j += 2) {
+            stroke(119, 192, 51);
+            strokeWeight(2);
+            line((this.posX - j) + 25, 544 + j, (this.posX - j) + 45, 544 + j)
+        }
+        this.posX -= 2;
+        this.posX <= -50 ? this.posX = width : this.posX;
+    }
 }
 // Creates the pipe objects
 function pipe(posX, posY, height) {
@@ -78,8 +89,8 @@ function star(posX, posY) {
     this.posX = posX;
     this.posY = posY;
     this.displaySmall = function () {
-        stroke(255);
-        rect(this.posX, this.posY, 2, 2);
+        stroke(211, 217, 230);
+        ellipse(this.posX, this.posY, 2, 2);
     }
     this.displayLarge = function () {
         stroke(254, 241, 0);
@@ -87,5 +98,30 @@ function star(posX, posY) {
         rect(this.posX - 3, this.posY + 3, 8, 2);
     }
 }
-//Calculates the height of the pipes
+function Jayhawk(x, y) {
+    this.x = x;
+    this.y = y;
+    this.display = function () {
+        noStroke();
+        let jayhawkConstraints = constrain(JAYHAWK.y, 0, 500);
+        rect(this.x, jayhawkConstraints, 40, 40);
+    }
+    this.up = function keyPressed(value) {
+        value === 32 && this.y >= 0 ? this.y -= 2 : this.y;
+    }
+    this.down = function () {
+        this.y <= 500 ? this.y += 3 : this.y;
+    }
+    this.checkIfTouchPipes = function (pipe) {
+             // TOP PIPE
+        if (((pipe.posX <= this.x + 40 && pipe.posX >= this.x - 70) &&
+           (pipe.posY <= this.y && this.y <= pipe.height + 13)) ||
+            // BOTTOM PIPE
+           ((pipe.posX <= this.x + 40 && pipe.posX >= this.x - 70) &&
+           (pipe.posY + pipe.height + 100 <= this.y))) {
+                text("GAME OVER", 200, 200);
+        }
+    }
+}
+// Calculates the height of the pipes
 let pipeHeight = () => Math.floor(Math.random() * (380 - 20) + 20);

@@ -1,6 +1,7 @@
 //// Global variables
 let pipes = [],
-    stars = [];
+    stars = [],
+    grounds = [];
 // Setup - called once when the page is loaded
 function setup() {
     createCanvas(600, 600);
@@ -15,6 +16,10 @@ function setup() {
         let starY = Math.floor(Math.random() * (270 - 40) + 40);
         stars.push(new star(starX, starY));
     }
+    // Creates the ground
+    for (var i = 0; i < 16; i++) {
+        grounds.push(new ground(i * 50, 543));
+    }
 }
 // Continually draws objects on screen
 function draw() {
@@ -23,33 +28,33 @@ function draw() {
     stars.forEach((x, i) => i % 4 == 0 ? x.displayLarge() : x.displaySmall());
     // Draws the pipes
     pipes.forEach(x => x.display());
-    // Draws the ground
+    // Ground layer
     fill(225, 218, 158);
     rect(-2, 540, width + 4, 62);
-    noStroke();
-    // --grass
-    for (var i = 0, l = groundXs.length; i < l; i++) {
-        fill(156, 231, 90);
-        rect(groundXs[i], 543, 50, 26);
-        for (let j = 0; j < 25; j += 2) {
-            stroke(119, 192, 51);
-            strokeWeight(2);
-            line((groundXs[i] - j) + 25, 544 + j, (groundXs[i] - j) + 45, 544 + j)
-        }
-        groundXs[i] -= 2;
-        groundXs[i] <= -50 ? groundXs[i] = width : groundXs[i];
-        noStroke();
-    }
-    // Fills in the rest of the ground
+    // Draws the grass blocks
+    grounds.forEach(x => x.display());
+    // Ground shading
     stroke(80, 127, 44);
     line(0, 570, width, 570);
     stroke(221, 169, 90);
     line(0, 572, width, 572);
 }
 // Creates the ground objects
-let groundXs = [];
-for (var i = 0; i < 16; i++) {
-    groundXs.push(i * 50);
+function ground(posX, posY) {
+    this.posX = posX;
+    this.posY = posY;
+    this.display = function () {
+        noStroke();
+        fill(156, 231, 90);
+        rect(this.posX, 543, 50, 26);
+        for (let j = 0; j < 25; j += 2) {
+            stroke(119, 192, 51);
+            strokeWeight(2);
+            line((this.posX - j) + 25, 544 + j, (this.posX - j) + 45, 544 + j)
+        }
+        this.posX -= 2;
+        this.posX <= -50 ? this.posX = width : this.posX;
+    }
 }
 // Creates the pipe objects
 function pipe(posX, posY, height) {
@@ -87,5 +92,5 @@ function star(posX, posY) {
         rect(this.posX - 3, this.posY + 3, 8, 2);
     }
 }
-//Calculates the height of the pipes
+// Calculates the height of the pipes
 let pipeHeight = () => Math.floor(Math.random() * (380 - 20) + 20);
