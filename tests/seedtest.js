@@ -49,6 +49,7 @@ function draw() {
     stroke(0);
     strokeWeight(4);
     text(JAYHAWK.score, 290, 40);
+
 }
 // Creates the ground objects
 function ground(posX, posY) {
@@ -117,22 +118,6 @@ function Jayhawk(x, y, score) {
         this.move();
     }
     // Controls Jayhawk movement
-    this.up = function keyPressed(value) {
-        value === 32 && this.y >= 0 ? this.y -= 2 : this.y;
-    }
-    this.down = function () {
-        this.y <= 500 ? this.y += 3 : this.y;
-    }
-    this.checkIfTouchPipes = function (pipe) {
-        // TOP PIPE
-        if (((pipe.posX <= this.x + 40 && pipe.posX >= this.x - 70) &&
-            (pipe.posY <= this.y && this.y <= pipe.height + 13)) ||
-            // BOTTOM PIPE
-            ((pipe.posX <= this.x + 40 && pipe.posX >= this.x - 70) &&
-                (pipe.posY + pipe.height + 100 <= this.y))) {
-            text("GAME OVER", 200, 200);
-        }
-    }
     this.move = function () {
         if (keyIsDown(65)) {
             this.x -= 2;
@@ -144,6 +129,16 @@ function Jayhawk(x, y, score) {
             this.y -= 2;
         } else {
             this.y += 2.5;
+        }
+    }
+    this.checkIfTouchPipes = function (pipe) {
+        // TOP PIPE
+        if (((pipe.posX <= this.x + 40 && pipe.posX >= this.x - 70) &&
+            (pipe.posY <= this.y && this.y <= pipe.height + 13)) ||
+            // BOTTOM PIPE
+            ((pipe.posX <= this.x + 40 && pipe.posX >= this.x - 70) &&
+                (pipe.posY + pipe.height + 100 <= this.y))) {
+            text("GAME OVER", 200, 200);
         }
     }
 }
