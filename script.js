@@ -5,6 +5,7 @@ let pipes = [],
     grounds = [];
 const JAYHAWK = new Jayhawk(200, 200, 0);
 let instances = 0;
+let GAME = true;
 // Setup - called once when the page is loaded
 function setup() {
     createCanvas(600, 600);
@@ -65,7 +66,7 @@ function ground(posX, posY) {
             strokeWeight(2);
             line((this.posX - j) + 25, 544 + j, (this.posX - j) + 45, 544 + j)
         }
-        this.posX -= 2;
+        GAME == true ? this.posX -= 2 : this.posX -= 0;
         this.posX <= -50 ? this.posX = width : this.posX;
     }
 }
@@ -87,7 +88,7 @@ function pipe(posX, posY, height) {
         rect(this.posX, this.posY + (this.height + 160), 70, 540 - (this.height) - 150);
         rect(this.posX - 3, this.height + 130, 76, 20);
         // Pipe wraparound
-        this.posX -= 2;
+        GAME == true ? this.posX -= 2 : this.posX -= 0;
         if (this.posX <= -200) {
             this.posX = width + 200;
             this.height = pipeHeight();
@@ -118,7 +119,7 @@ function Jayhawk(x, y, score) {
         noStroke();
         let jayhawkConstraints = constrain(JAYHAWK.y, 0, 500);
         rect(this.x, jayhawkConstraints, 40, 40);
-        this.move();
+        GAME == true ? this.move() : this.posX;
     }
     // Controls Jayhawk movement
     this.up = function keyPressed(value) {
@@ -134,6 +135,8 @@ function Jayhawk(x, y, score) {
             // BOTTOM PIPE
             ((pipe.posX <= this.x + 40 && pipe.posX >= this.x - 70) &&
                 (pipe.posY + pipe.height + 100 <= this.y))) {
+            GAME = false;
+            fill(255);
             text("GAME OVER", 200, 200);
         }
     }
@@ -146,7 +149,7 @@ function Jayhawk(x, y, score) {
         }
         if (keyIsDown(32) && this.y > 0) {
             this.y -= 2;
-        } else if (this.y <= 500) {
+        } else if (this.y <= 500 && !keyIsDown(32)) {
             this.y += 2.5;
         }
     }
