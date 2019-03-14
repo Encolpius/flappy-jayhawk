@@ -4,6 +4,7 @@ let pipes = [],
     stars = [],
     grounds = [];
 const JAYHAWK = new Jayhawk(200, 200, 0);
+let instances = 0;
 // Setup - called once when the page is loaded
 function setup() {
     createCanvas(600, 600);
@@ -29,7 +30,8 @@ function draw() {
     // Draws the pipes
     pipes.forEach(function (x) {
         x.display();
-        JAYHAWK.checkIfTouchPipes(x);
+        JAYHAWK.checkIfTouchPipes(x); 
+        JAYHAWK.x >= x.posX + 20 && JAYHAWK.x <= x.posX + 22 ? JAYHAWK.score = x.pipeNumber : false;
     });
     // First ground layer
     fill(225, 218, 158);
@@ -47,7 +49,7 @@ function draw() {
     textSize(30);
     fill(255);
     stroke(0);
-    strokeWeight(4);
+    strokeWeight(4);    
     text(JAYHAWK.score, 290, 40);
 }
 // Creates the ground objects
@@ -69,6 +71,8 @@ function ground(posX, posY) {
 }
 // Creates the pipe objects
 function pipe(posX, posY, height) {
+    instances++;
+    this.pipeNumber = instances;
     this.posX = posX;
     this.posY = posY;
     this.height = height;
@@ -87,8 +91,8 @@ function pipe(posX, posY, height) {
         if (this.posX <= -200) {
             this.posX = width + 200;
             this.height = pipeHeight();
+            this.pipeNumber += 5;
         }
-        JAYHAWK.x == this.posX + 20 ? JAYHAWK.score++ : false;
     }
 }
 // Creates pretty twinkling stars
@@ -134,15 +138,15 @@ function Jayhawk(x, y, score) {
         }
     }
     this.move = function () {
-        if (keyIsDown(65)) {
+        if (keyIsDown(65) && this.x > 0) {
             this.x -= 2;
         }
-        if (keyIsDown(68)) {
+        if (keyIsDown(68) && this.x < 560) {
             this.x += 2;
         }
-        if (keyIsDown(32)) {
+        if (keyIsDown(32) && this.y > 0) {
             this.y -= 2;
-        } else {
+        } else if (this.y <= 500) {
             this.y += 2.5;
         }
     }
