@@ -157,16 +157,67 @@ function Jayhawk(x, y, score) {
 }
 function buildings() {
     noStroke();
-    fill(145, 170, 201);  
+    // White
+    fill(145, 170, 201);
+    rect(15, 480, 20, 90);
+    rect(30, 450, 30, 95);
+    rect(50, 430, 10, 120)
+    rect(240, 467, 10, 95);
+    rect(310, 500, 50, 65);
+    rect(367, 467, 10, 95);
+    rect(475, 447, 7, 120);
+    rect(570, 465, 30, 120);
+    // Dark
+    fill(68, 90, 120);
+    rect(30, 450, 20, 95);
+    rect(140, 460, 30, 95);
+    rect(210, 470, 30, 95);
+    rect(437, 500, 23, 60);
+    rect(547, 487, 35, 100);
+    // Medium
+    fill(88, 115, 148);
+    rect(60, 430, 80, 120);
+    rect(250, 467, 60, 95);
+    rect(377, 467, 60, 95);
+    rect(482, 447, 65, 120);
+    
+}
+// Calculates the height of the pipes
+let pipeHeight = () => Math.floor(Math.random() * (380 - 20) + 20);
+
+/*
+function buildings() {
+    noStroke();
+
+    fill(145, 170, 201);          // White
     rect(15, 480, 20, 90);
     fill(68, 90, 120);            // Dark
     rect(30, 450, 30, 95);
     fill(145, 170, 201);         // White
     rect(50, 430, 10, 120)
-    fill(88, 115, 148);          // Medium 
+    fill(88, 115, 148);          // Medium
     rect(60, 430, 80, 120);
-    fill(68, 90, 120);
+    fill(68, 90, 120);           // Dark
     rect(140, 460, 30, 95);
-}
-// Calculates the height of the pipes
-let pipeHeight = () => Math.floor(Math.random() * (380 - 20) + 20);
+    rect(210, 470, 30, 95);
+    fill(145, 170, 201);         // White
+    rect(240, 467, 10, 95);
+    fill(88, 115, 148);          // Medium
+    rect(250, 467, 60, 95);
+    fill(145, 170, 201);         // White
+    rect(310, 500, 50, 65);
+    rect(367, 467, 10, 95);
+    fill(88, 115, 148);          // Medium
+    rect(377, 467, 60, 95);
+    fill(68, 90, 120);           // Dark
+    rect(437, 500, 23, 60);
+    fill(145, 170, 201);         // White
+    rect(475, 447, 7, 120);
+    fill(88, 115, 148);          // Medium
+    rect(482, 447, 65, 120);
+    fill(145, 170, 201);         // White
+    rect(570, 465, 30, 120);
+    fill(68, 90, 120);           // Dark
+    rect(547, 487, 35, 100);
+
+*/

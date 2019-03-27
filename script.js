@@ -26,6 +26,7 @@ function setup() {
 // Continually draws objects on screen
 function draw() {
     background(9, 135, 147);
+    buildings();
     // Draws the stars
     stars.forEach((x, i) => i % 4 == 0 ? x.displayLarge() : x.displaySmall());
     // Draws the pipes
@@ -131,10 +132,10 @@ function Jayhawk(x, y, score) {
     this.checkIfTouchPipes = function (pipe) {
         // TOP PIPE
         if (((pipe.posX <= this.x + 40 && pipe.posX >= this.x - 70) &&
-            (pipe.posY <= this.y && this.y <= pipe.height + 13)) ||
+            (pipe.posY <= this.y && this.y <= pipe.height + 12)) ||
             // BOTTOM PIPE
             ((pipe.posX <= this.x + 40 && pipe.posX >= this.x - 70) &&
-                (pipe.posY + pipe.height + 100 <= this.y))) {
+                (pipe.posY + pipe.height + 98 <= this.y))) {
             GAME = false;
             fill(255);
             text("GAME OVER", 200, 200);
@@ -153,6 +154,33 @@ function Jayhawk(x, y, score) {
             this.y += 2.5;
         }
     }
+}
+// Creates the background buildings
+function buildings() {
+    noStroke();
+    // White
+    fill(145, 170, 201);
+    rect(15, 480, 20, 90);
+    rect(30, 450, 30, 95);
+    rect(50, 430, 10, 120)
+    rect(240, 467, 10, 95);
+    rect(310, 500, 50, 65);
+    rect(367, 467, 10, 95);
+    rect(475, 447, 7, 120);
+    rect(570, 465, 30, 120);
+    // Dark
+    fill(68, 90, 120);
+    rect(30, 450, 20, 95);
+    rect(140, 460, 30, 95);
+    rect(200, 475, 40, 95);
+    rect(437, 500, 23, 60);
+    rect(547, 487, 35, 100);
+    // Medium
+    fill(88, 115, 148);
+    rect(60, 430, 80, 120);
+    rect(250, 467, 60, 95);
+    rect(377, 467, 60, 95);
+    rect(482, 447, 65, 120);
 }
 // Calculates the height of the pipes
 let pipeHeight = () => Math.floor(Math.random() * (380 - 20) + 20);
