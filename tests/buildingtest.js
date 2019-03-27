@@ -131,11 +131,15 @@ function Jayhawk(x, y, score) {
     }
     this.checkIfTouchPipes = function (pipe) {
         // TOP PIPE
-        if (((pipe.posX <= this.x + 40 && pipe.posX >= this.x - 70) &&
+        if (((pipe.posX - 2 <= this.x + 40 && pipe.posX - 2 >= this.x - 70) &&
             (pipe.posY <= this.y && this.y <= pipe.height + 11.5)) ||
+            ((pipe.posX - 5 <= this.x + 40 && pipe.posX -2 >= this.x - 70) &&
+            (this.y <= pipe.posY + pipe.height + 10 && this.y + 40 >= pipe.posY + pipe.height + 10)) ||
             // BOTTOM PIPE
-            ((pipe.posX <= this.x + 40 && pipe.posX >= this.x - 70) &&
-                (pipe.posY + pipe.height + 98 <= this.y))) {
+            ((pipe.posX - 2 <= this.x + 40 && pipe.posX -2 >= this.x - 70) &&
+                (pipe.posY + pipe.height + 98 <= this.y)) ||
+            ((pipe.posX - 5 <= this.x + 40 && pipe.posX - 5 >= this.x - 70) &&
+            (this.y >= pipe.posY + pipe.height + 110 && this.y + 40 <= pipe.posY + pipe.height + 190))) {
             GAME = false;
             fill(255);
             text("GAME OVER", 200, 200);

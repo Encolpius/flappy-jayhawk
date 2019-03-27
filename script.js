@@ -29,6 +29,8 @@ function draw() {
     buildings();
     // Draws the stars
     stars.forEach((x, i) => i % 4 == 0 ? x.displayLarge() : x.displaySmall());
+    // Draws the Jayhawk
+    JAYHAWK.display();
     // Draws the pipes
     pipes.forEach(function (x) {
         x.display();
@@ -40,8 +42,6 @@ function draw() {
     rect(-2, 540, width + 4, 62);
     // Draws the grass blocks
     grounds.forEach(x => x.display());
-    // Draws the Jayhawk
-    JAYHAWK.display();
     // Ground shading
     stroke(80, 127, 44);
     line(0, 570, width, 570);
@@ -118,6 +118,7 @@ function Jayhawk(x, y, score) {
     this.score = score;
     this.display = function () {
         noStroke();
+        fill(129, 208, 58);
         let jayhawkConstraints = constrain(JAYHAWK.y, 0, 500);
         rect(this.x, jayhawkConstraints, 40, 40);
         GAME == true ? this.move() : this.posX;
@@ -131,11 +132,15 @@ function Jayhawk(x, y, score) {
     }
     this.checkIfTouchPipes = function (pipe) {
         // TOP PIPE
-        if (((pipe.posX <= this.x + 40 && pipe.posX >= this.x - 70) &&
-            (pipe.posY <= this.y && this.y <= pipe.height + 12)) ||
+        if (((pipe.posX - 1 <= this.x + 40 && pipe.posX - 1 >= this.x - 70) &&
+            (pipe.posY <= this.y && this.y <= pipe.height + 11.5)) ||
+            ((pipe.posX - 5 <= this.x + 40 && pipe.posX - 2 >= this.x - 70) &&
+                (this.y <= pipe.posY + pipe.height + 10 && this.y + 40 >= pipe.posY + pipe.height + 10)) ||
             // BOTTOM PIPE
-            ((pipe.posX <= this.x + 40 && pipe.posX >= this.x - 70) &&
-                (pipe.posY + pipe.height + 98 <= this.y))) {
+            ((pipe.posX - 1 <= this.x + 40 && pipe.posX - 1 >= this.x - 70) &&
+                (pipe.posY + pipe.height + 99 <= this.y)) ||
+            ((pipe.posX - 5 <= this.x + 40 && pipe.posX - 5 >= this.x - 70) &&
+                (this.y >= pipe.posY + pipe.height + 110 && this.y + 40 <= pipe.posY + pipe.height + 190))) {
             GAME = false;
             fill(255);
             text("GAME OVER", 200, 200);
